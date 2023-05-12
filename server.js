@@ -53,32 +53,6 @@ app.post("/api/movies", (req, res) => {
   });
 });
 
-app.put("/api/movies/:id", (req, res) => {
-  const sql = `UPDATE movies SET movie_name = ? WHERE id = ?`;
-  const params = [req.body.movie_name, req.params.id];
-
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      res.status(500).json({ error: err.message });
-      return;
-    }
-
-    if (!result.affectedRows) {
-      res.status(404).json({ message: "Movie not found" });
-      return;
-    }
-
-    res.status(200).json({
-      message: "success",
-      data: {
-        id: req.params.id,
-        ...req.body,
-      },
-      changes: result.affectedRows,
-    });
-  });
-});
-
 app.delete("/api/movies/:id", (req, res) => {
   const sql = `DELETE FROM movies WHERE id = ?`;
   const params = [req.params.id];
